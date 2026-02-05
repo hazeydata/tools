@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools Hub | Hazeydata</title>
+    <meta name="description" content="Hazeydata's collection of free developer tools, data science utilities, and design helpers.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧰</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --border: #2a2a3a;
+            --text: #e0e0e5;
+            --text-dim: #8888a0;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #a855f7;
+            --accent-green: #22c55e;
+            --accent-orange: #f97316;
+            --accent-pink: #ec4899;
+            --gradient: linear-gradient(135deg, #00d4ff, #a855f7);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, rgba(0,212,255,0.1) 0%, transparent 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-top: 1rem;
+        }
+
+        .brand a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        /* Nav Tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text);
+        }
+
+        .nav-tab.active {
+            background: var(--gradient);
+            border-color: transparent;
+            color: #000;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Search & Filters */
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.75rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            color: #000;
+        }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .tool-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-cyan);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0,212,255,0.1);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .tool-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,212,255,0.1);
+            border-radius: 10px;
+        }
+
+        .tool-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .tool-description {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .category-badge.dev {
+            background: rgba(0,212,255,0.2);
+            color: var(--accent-cyan);
+        }
+
+        .category-badge.design {
+            background: rgba(168,85,247,0.2);
+            color: var(--accent-purple);
+        }
+
+        .category-badge.data {
+            background: rgba(34,197,94,0.2);
+            color: var(--accent-green);
+        }
+
+        .new-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent-orange);
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .tool-link {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        /* Analytics Section */
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .analytics-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem;
+        }
+
+        .analytics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .analytics-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--accent-green);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .analytics-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .analytics-stat {
+            background: rgba(255,255,255,0.03);
+            padding: 0.75rem;
+            border-radius: 6px;
+        }
+
+        .analytics-stat-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .analytics-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        /* Hidden sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        .footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .main {
+                padding: 1rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🧰 Hazeydata Tools Hub</h1>
+        <p>Free micro-tools for developers, data scientists & designers</p>
+        <div class="brand">
+            Built by <a href="https://hazeydata.ai" target="_blank">hazeydata.ai</a>
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="directory">📦 Tools Directory</button>
+        <button class="nav-tab" data-tab="analytics">📊 Analytics Dashboard</button>
+    </nav>
+
+    <main class="main">
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number">25</div>
+                <div class="stat-label">Total Tools</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">🟢</div>
+                <div class="stat-label">All Systems Live</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">—</div>
+                <div class="stat-label">Total Views (Coming Soon)</div>
+            </div>
+        </div>
+
+        <!-- Tools Directory Section -->
+        <section id="directory" class="section active">
+            <div class="controls">
+                <input type="text" class="search-box" placeholder="🔍 Search tools..." id="searchInput">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="dev">🛠️ Dev Tools</button>
+                    <button class="filter-btn" data-filter="design">🎨 Design</button>
+                    <button class="filter-btn" data-filter="data">📈 Data Science</button>
+                </div>
+            </div>
+
+            <div class="tools-grid" id="toolsGrid">
+                <!-- Tools will be inserted by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="section">
+            <h2 class="section-title">📊 Tool Analytics</h2>
+            <div class="analytics-grid" id="analyticsGrid">
+                <!-- Analytics cards will be inserted by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 <a href="https://hazeydata.ai">Hazeydata</a> • All tools are free to use</p>
+    </footer>
+
+    <script>
+        // Tool data
+        const tools = [
+            // Dev Tools
+            { name: "CronMagic", emoji: "⏰", url: "https://cronmagic.hazeydata.ai", desc: "Cron expression converter", category: "dev", launch: "2025-01" },
+            { name: "ChmodCalc", emoji: "🔐", url: "https://chmodcalc.hazeydata.ai", desc: "Unix permission calculator", category: "dev", launch: "2025-01" },
+            { name: "RegexMagic", emoji: "🔮", url: "https://regexmagic.hazeydata.ai", desc: "Regex builder & tester", category: "dev", launch: "2025-01" },
+            { name: "GitMagic", emoji: "🌿", url: "https://gitmagic.hazeydata.ai", desc: "Git command helper", category: "dev", launch: "2025-01" },
+            { name: "JSONPretty", emoji: "📋", url: "https://jsonpretty.hazeydata.ai", desc: "JSON formatter & validator", category: "dev", launch: "2025-01" },
+            { name: "Base64Magic", emoji: "🔄", url: "https://base64magic.hazeydata.ai", desc: "Base64 encoder/decoder", category: "dev", launch: "2025-01" },
+            { name: "HashMagic", emoji: "🔒", url: "https://hashmagic.hazeydata.ai", desc: "Hash generator (MD5, SHA, etc.)", category: "dev", launch: "2025-01" },
+            { name: "UUIDMagic", emoji: "🆔", url: "https://uuidmagic.hazeydata.ai", desc: "UUID generator", category: "dev", launch: "2025-01" },
+            { name: "TimestampMagic", emoji: "🕐", url: "https://timestampmagic.hazeydata.ai", desc: "Unix timestamp converter", category: "dev", launch: "2025-01" },
+            { name: "JWTMagic", emoji: "🎫", url: "https://jwtmagic.hazeydata.ai", desc: "JWT decoder & inspector", category: "dev", launch: "2025-01" },
+            { name: "URLEncode", emoji: "🔗", url: "https://urlencode.hazeydata.ai", desc: "URL encoder/decoder", category: "dev", launch: "2025-01" },
+            { name: "MarkdownMagic", emoji: "📝", url: "https://markdownmagic.hazeydata.ai", desc: "Markdown editor & preview", category: "dev", launch: "2025-01" },
+            { name: "LoremMagic", emoji: "📰", url: "https://loremmagic.hazeydata.ai", desc: "Lorem ipsum generator", category: "dev", launch: "2025-01" },
+            { name: "CSSUnitMagic", emoji: "📐", url: "https://cssunitmagic.hazeydata.ai", desc: "CSS unit converter", category: "dev", launch: "2025-01" },
+            { name: "IPMagic", emoji: "🌐", url: "https://ipmagic.hazeydata.ai", desc: "IP address tools & lookup", category: "dev", launch: "2025-02", new: true },
+            
+            // Design Tools
+            { name: "ColorMagic", emoji: "🎨", url: "https://colormagic.hazeydata.ai", desc: "Color format converter", category: "design", launch: "2025-01" },
+            { name: "PaletteMagic", emoji: "🌈", url: "https://palettemagic.hazeydata.ai", desc: "Color palette generator", category: "design", launch: "2025-01" },
+            { name: "GlassMagic", emoji: "🪟", url: "https://glassmagic.hazeydata.ai", desc: "Glassmorphism CSS generator", category: "design", launch: "2025-01" },
+            
+            // Data Science Tools
+            { name: "ConfidenceCalc", emoji: "📊", url: "https://confidencecalc.hazeydata.ai", desc: "Confidence interval calculator", category: "data", launch: "2025-01" },
+            { name: "ZScoreCalc", emoji: "📈", url: "https://zscorecalc.hazeydata.ai", desc: "Z-score calculator", category: "data", launch: "2025-01" },
+            { name: "OutlierDetector", emoji: "🎯", url: "https://outlierdetector.hazeydata.ai", desc: "Statistical outlier detection", category: "data", launch: "2025-01" },
+            { name: "HistogramMaker", emoji: "📊", url: "https://histogrammaker.hazeydata.ai", desc: "Histogram generator", category: "data", launch: "2025-01" },
+            { name: "BoxPlotMaker", emoji: "📦", url: "https://boxplotmaker.hazeydata.ai", desc: "Box plot generator", category: "data", launch: "2025-01" },
+            { name: "ScatterPlotter", emoji: "✨", url: "https://scatterplotter.hazeydata.ai", desc: "Scatter plot maker", category: "data", launch: "2025-01" },
+            { name: "CSVStats", emoji: "📄", url: "https://csvstats.hazeydata.ai", desc: "CSV data profiler", category: "data", launch: "2025-02", new: true }
+        ];
+
+        const categoryLabels = {
+            dev: "Dev Tools",
+            design: "Design",
+            data: "Data Science"
+        };
+
+        // Render tools grid
+        function renderTools(filter = 'all', search = '') {
+            const grid = document.getElementById('toolsGrid');
+            const filtered = tools.filter(tool => {
+                const matchesFilter = filter === 'all' || tool.category === filter;
+                const matchesSearch = tool.name.toLowerCase().includes(search.toLowerCase()) ||
+                                     tool.desc.toLowerCase().includes(search.toLowerCase());
+                return matchesFilter && matchesSearch;
+            });
+
+            grid.innerHTML = filtered.map(tool => `
+                <a href="${tool.url}" target="_blank" class="tool-card" data-category="${tool.category}">
+                    ${tool.new ? '<span class="new-badge">New</span>' : ''}
+                    <div class="tool-header">
+                        <div class="tool-icon">${tool.emoji}</div>
+                        <div class="tool-name">${tool.name}</div>
+                    </div>
+                    <div class="tool-description">${tool.desc}</div>
+                    <div class="tool-footer">
+                        <span class="category-badge ${tool.category}">${categoryLabels[tool.category]}</span>
+                        <span class="tool-link">${tool.url.replace('https://', '')}</span>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // Render analytics grid
+        function renderAnalytics() {
+            const grid = document.getElementById('analyticsGrid');
+            grid.innerHTML = tools.map(tool => `
+                <div class="analytics-card">
+                    <div class="analytics-header">
+                        <span class="analytics-name">${tool.emoji} ${tool.name}</span>
+                        <span class="status-indicator">
+                            <span class="status-dot"></span>
+                            Live
+                        </span>
+                    </div>
+                    <div class="analytics-stats">
+                        <div class="analytics-stat">
+                            <div class="analytics-stat-value">—</div>
+                            <div class="analytics-stat-label">Page Views</div>
+                        </div>
+                        <div class="analytics-stat">
+                            <div class="analytics-stat-value">${tool.launch}</div>
+                            <div class="analytics-stat-label">Launched</div>
+                        </div>
+                        <div class="analytics-stat">
+                            <div class="analytics-stat-value">${categoryLabels[tool.category]}</div>
+                            <div class="analytics-stat-label">Category</div>
+                        </div>
+                        <div class="analytics-stat">
+                            <div class="analytics-stat-value">✓</div>
+                            <div class="analytics-stat-label">Active</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Tab switching
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Filter buttons
+        let currentFilter = 'all';
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderTools(currentFilter, document.getElementById('searchInput').value);
+            });
+        });
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            renderTools(currentFilter, e.target.value);
+        });
+
+        // Initial render
+        renderTools();
+        renderAnalytics();
+    </script>
+</body>
+</html>
